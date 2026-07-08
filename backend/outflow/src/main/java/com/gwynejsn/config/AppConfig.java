@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @ComponentScan(basePackages = "com.gwynejsn")
@@ -26,10 +27,10 @@ public class AppConfig {
     @Bean
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
-        config.setDriverClassName("org.h2.Driver");
-        config.setJdbcUrl("jdbc:h2:mem:testdb");
-        config.setUsername("sa");
-        config.setPassword("");
+        config.setDriverClassName("org.postgresql.Driver");
+        config.setJdbcUrl("jdbc:postgresql://outflow-postgres-db:5432/outflow_db?sslmode=disable");
+        config.setUsername("springuser");
+        config.setPassword("springpass");
         return new HikariDataSource(config);
     }
 
@@ -38,7 +39,15 @@ public class AppConfig {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);
 
+        Properties jpaProperties = new Properties();
+        jpaProperties.put("hibernate.hbm2ddl.auto", "update");
+        jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        jpaProperties.setProperty("hibernate.show_sql", "true");
+        jpaProperties.setProperty("hibernate.format_sql", "true");
+
+
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setJpaProperties(jpaProperties);
         em.setDataSource(dataSource());
         em.setJpaVendorAdapter(vendorAdapter);
         em.setPackagesToScan("com.gwynejsn.model");
