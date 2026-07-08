@@ -1,0 +1,41 @@
+name: outflow
+
+services:
+  backend:
+    container_name: outflow-backend
+    build: "./backend/outflow"
+    ports:
+    - "8080:8080"
+    depends_on:
+      outflow-postgres-db:
+        condition: service_healthy
+    networks:
+      - spring-postgres
+
+  outflow-postgres-db:
+    container_name: outflow-postgres-db
+    image: postgres:17
+    environment:
+      POSTGRES_USER: springuser
+      POSTGRES_PASSWORD: springpass
+      POSTGRES_DB: outflow_db
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+    ports:
+      - "1997:5432"
+    networks:
+      - spring-postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U springuser -d outflow_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+networks:
+  spring-postgres:
+    driver: bridge
+
+volumes:
+  postgres-data:
