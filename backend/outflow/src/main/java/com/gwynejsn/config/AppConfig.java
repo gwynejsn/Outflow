@@ -12,6 +12,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.sql.DataSource;
 
@@ -19,6 +20,7 @@ import javax.sql.DataSource;
 @ComponentScan(basePackages = "com.gwynejsn")
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.gwynejsn.dao")
+@EnableWebMvc
 public class AppConfig {
 
     @Bean
