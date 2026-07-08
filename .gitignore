@@ -1,0 +1,34 @@
+# --- Project Specific Targets ---
+**/target/
+**/build/
+**/out/
+
+# --- IntelliJ IDEA ---
+**/.*.xml
+**/.idea/
+**/*.iml
+**/*.iws
+**/*.ipr
+
+# --- Eclipse ---
+**/.apt_generated
+**/.classpath
+**/.factorypath
+**/.project
+**/.settings
+**/.springBeans
+**/.sts4-cache
+
+# --- NetBeans ---
+**/nbproject/private/
+**/nbbuild/
+**/dist/
+**/nbdist/
+**/.nb-gradle/
+
+# --- VS Code ---
+**/.vscode/
+
+# --- Operating Systems ---
+**/.DS_Store
+Thumbs.db
