@@ -21,7 +21,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // Prevent executing twice if there are root/child contexts
-        if (dao.count() > 0) return;
+        dao.deleteAll();
 
         Subscription netflix = new Subscription(
                 "Netflix Premium",
