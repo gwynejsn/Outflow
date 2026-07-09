@@ -4,13 +4,17 @@ import com.gwynejsn.enums.Category;
 import com.gwynejsn.enums.Cycle;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-public record SubscriptionCreateDto(
+public record SubscriptionUpdateDto(
+        UUID id,
         String title,
         String description,
         Float price,
         String imageUrl,
         Cycle cycle,
         Category category,
+        LocalDateTime renewedAt,
         LocalDateTime expiresAt
-) {}
+) {
+}

@@ -1,6 +1,7 @@
 package com.gwynejsn.model;
 
 import com.gwynejsn.enums.Category;
+import com.gwynejsn.enums.Cycle;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.lang.NonNull;
@@ -19,18 +20,25 @@ public class Subscription {
     private Float price;
     @Column(name = "image_url")
     private String imageUrl;
+    @Enumerated(EnumType.STRING)
     private Category category;
+    @Enumerated(EnumType.STRING)
+    private Cycle cycle;
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+    @Column(name = "renewed_at")
     private LocalDateTime renewedAt;
+    @Column(name = "expires_at")
     private LocalDateTime expiresAt;
 
     public Subscription() {}
 
-    public Subscription(String title, String description, Float price, String imageUrl, Category category, LocalDateTime createdAt, LocalDateTime renewedAt, LocalDateTime expiresAt) {
+    public Subscription(String title, String description, Float price, String imageUrl, Cycle cycle, Category category, LocalDateTime createdAt, LocalDateTime renewedAt, LocalDateTime expiresAt) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
+        this.cycle = cycle;
         this.category = category;
         this.createdAt = createdAt;
         this.renewedAt = renewedAt;
@@ -109,4 +117,8 @@ public class Subscription {
     public void setExpiresAt(LocalDateTime expiresAt) {
         this.expiresAt = expiresAt;
     }
+
+    public Cycle getCycle() { return cycle; }
+
+    public void setCycle(Cycle cycle) { this.cycle = cycle; }
 }
