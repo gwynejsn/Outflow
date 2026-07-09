@@ -6,7 +6,6 @@ import com.gwynejsn.dto.SubscriptionDTO;
 import com.gwynejsn.model.Subscription;
 import com.gwynejsn.service.SubscriptionService;
 import com.gwynejsn.utils.mappers.SubscriptionMapper;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;

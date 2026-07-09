@@ -2,6 +2,8 @@ package com.gwynejsn.model;
 
 import com.gwynejsn.enums.Category;
 import jakarta.persistence.*;
+import org.hibernate.annotations.UuidGenerator;
+import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -9,7 +11,8 @@ import java.util.UUID;
 @Entity
 public class Subscription {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
     private String title;
     private String description;
@@ -32,6 +35,15 @@ public class Subscription {
         this.createdAt = createdAt;
         this.renewedAt = renewedAt;
         this.expiresAt = expiresAt;
+    }
+
+    @NonNull
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(@NonNull UUID id) {
+        this.id = id;
     }
 
     public String getTitle() {

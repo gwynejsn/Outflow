@@ -28,7 +28,8 @@ public class AppConfig {
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("org.postgresql.Driver");
-        config.setJdbcUrl("jdbc:postgresql://outflow-postgres-db:5432/outflow_db?sslmode=disable");
+//        config.setJdbcUrl("jdbc:postgresql://outflow-postgres-db:5432/outflow_db?sslmode=disable");
+        config.setJdbcUrl("jdbc:postgresql://localhost:1997/outflow_db?sslmode=disable");
         config.setUsername("springuser");
         config.setPassword("springpass");
         return new HikariDataSource(config);
