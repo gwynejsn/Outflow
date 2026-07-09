@@ -1,8 +1,11 @@
 package com.gwynejsn.service;
 
 import com.gwynejsn.dao.SubscriptionDao;
+import com.gwynejsn.exception.AlreadyExistException;
+import com.gwynejsn.exception.NotFoundException;
 import com.gwynejsn.model.Subscription;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,18 +23,31 @@ public class SubscriptionService {
     }
 
     public Subscription getSubscriptionById(UUID id) {
-        return subscriptionDao.findById(id).orElse(null);
+        return subscriptionDao.findById(id)
+                .orElseThrow(() -> new NotFoundException("Subscription with id " + id + " does not exist"));
     }
 
+    @Transactional
     public Subscription saveSubscription(Subscription subscription) {
+        if (subscription.getId() != null && subscriptionDao.existsById(subscription.getId())) {
+            throw new AlreadyExistException("Subscription with id " + subscription.getId() + " already exists");
+        }
         return subscriptionDao.save(subscription);
     }
 
-    public Subscription updateSubscription(Subscription subscription) {
-        return subscriptionDao.save(subscription);
+    @Transactional
+    public Subscription updateSubscription(UUID id, Subscription updatedFields) {
+        if (!subscriptionDao.existsById(id)) {
+            throw new NotFoundException("Cannot update. Subscription with id " + id + " does not exist");
+        }
+        return subscriptionDao.save(updatedFields);
     }
 
+    @Transactional
     public void deleteSubscription(UUID id) {
+        if (!subscriptionDao.existsById(id)) {
+            throw new NotFoundException("Cannot delete. Subscription with id " + id + " does not exist");
+        }
         subscriptionDao.deleteById(id);
     }
 }
