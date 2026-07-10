@@ -29,7 +29,7 @@ public class SubscriptionService {
 
     @Transactional
     public Subscription saveSubscription(Subscription subscription) {
-        if (subscription.getId() != null && subscriptionDao.existsById(subscription.getId())) {
+        if (subscriptionDao.existsById(subscription.getId())) {
             throw new AlreadyExistException("Subscription with id " + subscription.getId() + " already exists");
         }
         return subscriptionDao.save(subscription);
