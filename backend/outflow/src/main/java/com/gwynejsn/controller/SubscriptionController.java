@@ -1,8 +1,8 @@
 package com.gwynejsn.controller;
 
-import com.gwynejsn.dao.SubscriptionDao;
 import com.gwynejsn.dto.SubscriptionCreateDto;
 import com.gwynejsn.dto.SubscriptionDTO;
+import com.gwynejsn.dto.SubscriptionUpdateDto;
 import com.gwynejsn.model.Subscription;
 import com.gwynejsn.service.SubscriptionService;
 import com.gwynejsn.utils.mappers.SubscriptionMapper;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,16 +23,39 @@ public class SubscriptionController {
     }
 
     @GetMapping()
-    public List<SubscriptionDTO> subscription() {
-        return subscriptionService.getAllSubscriptions().stream().map(
-                SubscriptionMapper.INSTANCE::mapSubscriptionToDto
-        ).collect(Collectors.toList());
+    public List<SubscriptionDTO> getAllSubscriptions() {
+        return subscriptionService.getAllSubscriptions().stream()
+                .map(SubscriptionMapper.INSTANCE::mapSubscriptionToDto)
+                .collect(Collectors.toList());
     }
 
-    @PostMapping()
-    public Subscription createSubscription(@RequestBody SubscriptionCreateDto subscriptionCreateDto) {
+    @GetMapping("/{id}")
+    public SubscriptionDTO getSubscriptionById(@PathVariable("id") UUID id) {
+        Subscription subscription = subscriptionService.getSubscriptionById(id);
+        return SubscriptionMapper.INSTANCE.mapSubscriptionToDto(subscription);
+    }
+
+    @PostMapping("/create")
+    public SubscriptionDTO createSubscription(@RequestBody SubscriptionCreateDto subscriptionCreateDto) {
         Subscription subscription = SubscriptionMapper.INSTANCE.mapDtoToSubscription(subscriptionCreateDto);
         subscription.setCreatedAt(LocalDateTime.now());
-        return subscriptionService.saveSubscription(subscription);
+
+        Subscription saved = subscriptionService.saveSubscription(subscription);
+        return SubscriptionMapper.INSTANCE.mapSubscriptionToDto(saved);
+    }
+
+    @PutMapping("/update")
+    public SubscriptionDTO updateSubscription(@RequestBody SubscriptionUpdateDto subscriptionUpdateDto) {
+        Subscription currentSubscription = subscriptionService.getSubscriptionById(subscriptionUpdateDto.id());
+
+        SubscriptionMapper.INSTANCE.updateSubscriptionFromDto(subscriptionUpdateDto, currentSubscription);
+
+        Subscription saved = subscriptionService.updateSubscription(subscriptionUpdateDto.id(), currentSubscription);
+        return SubscriptionMapper.INSTANCE.mapSubscriptionToDto(saved);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteSubscription(@PathVariable("id") UUID id) {
+        subscriptionService.deleteSubscription(id);
     }
 }

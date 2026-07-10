@@ -2,10 +2,9 @@ package com.gwynejsn.utils.mappers;
 
 import com.gwynejsn.dto.SubscriptionCreateDto;
 import com.gwynejsn.dto.SubscriptionDTO;
+import com.gwynejsn.dto.SubscriptionUpdateDto;
 import com.gwynejsn.model.Subscription;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -16,4 +15,9 @@ public interface SubscriptionMapper {
     SubscriptionDTO mapSubscriptionToDto(Subscription subscription);
     @Mapping(target = "id", ignore = true)
     Subscription mapDtoToSubscription(SubscriptionCreateDto subscriptionCreateDto);
+    @Mapping(target = "id", ignore = true)
+    Subscription mapDtoToSubscription(SubscriptionUpdateDto subscriptionUpdateDto);
+    @Mapping(target = "id", ignore = true) // Protect the primary key from being overwritten
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateSubscriptionFromDto(SubscriptionUpdateDto dto, @MappingTarget Subscription subscription);
 }

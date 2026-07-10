@@ -2,6 +2,7 @@ package com.gwynejsn.utils;
 
 import com.gwynejsn.dao.SubscriptionDao;
 import com.gwynejsn.enums.Category;
+import com.gwynejsn.enums.Cycle;
 import com.gwynejsn.model.Subscription;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -28,6 +29,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 "4K UHD Streaming plan with 4 concurrent screens.",
                 14.99f,
                 "https://example.com/images/netflix.png",
+                Cycle.MONTHLY,
                 Category.ENTERTAINMENT,
                 LocalDateTime.now().minusMonths(3),
                 LocalDateTime.now(),
@@ -39,6 +41,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 "Ad-free music streaming for two accounts.",
                 149.00f,
                 "https://example.com/images/spotify.png",
+                Cycle.WEEKLY,
                 Category.ENTERTAINMENT,
                 LocalDateTime.now().minusMonths(6),
                 LocalDateTime.now().minusDays(5),
