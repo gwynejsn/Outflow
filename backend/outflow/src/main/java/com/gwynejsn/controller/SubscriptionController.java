@@ -6,6 +6,7 @@ import com.gwynejsn.dto.SubscriptionUpdateDto;
 import com.gwynejsn.model.Subscription;
 import com.gwynejsn.service.SubscriptionService;
 import com.gwynejsn.utils.mappers.SubscriptionMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -36,6 +37,7 @@ public class SubscriptionController {
     }
 
     @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
     public SubscriptionDTO createSubscription(@RequestBody SubscriptionCreateDto subscriptionCreateDto) {
         Subscription subscription = SubscriptionMapper.INSTANCE.mapDtoToSubscription(subscriptionCreateDto);
         subscription.setCreatedAt(LocalDateTime.now());

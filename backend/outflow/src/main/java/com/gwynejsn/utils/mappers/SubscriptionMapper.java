@@ -11,12 +11,8 @@ import org.mapstruct.factory.Mappers;
 public interface SubscriptionMapper {
     SubscriptionMapper INSTANCE = Mappers.getMapper(SubscriptionMapper.class);
 
-    @Mapping(source = "id", target = "id")
     SubscriptionDTO mapSubscriptionToDto(Subscription subscription);
-    @Mapping(target = "id", ignore = true)
     Subscription mapDtoToSubscription(SubscriptionCreateDto subscriptionCreateDto);
-    @Mapping(target = "id", ignore = true)
-    Subscription mapDtoToSubscription(SubscriptionUpdateDto subscriptionUpdateDto);
     @Mapping(target = "id", ignore = true) // Protect the primary key from being overwritten
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateSubscriptionFromDto(SubscriptionUpdateDto dto, @MappingTarget Subscription subscription);

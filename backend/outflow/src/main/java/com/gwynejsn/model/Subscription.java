@@ -30,6 +30,9 @@ public class Subscription {
     private LocalDateTime renewedAt;
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Subscription() {}
 
@@ -121,4 +124,12 @@ public class Subscription {
     public Cycle getCycle() { return cycle; }
 
     public void setCycle(Cycle cycle) { this.cycle = cycle; }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
