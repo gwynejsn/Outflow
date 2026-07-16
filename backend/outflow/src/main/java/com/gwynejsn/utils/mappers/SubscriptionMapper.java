@@ -14,6 +14,7 @@ public interface SubscriptionMapper {
     SubscriptionDTO mapSubscriptionToDto(Subscription subscription);
     Subscription mapDtoToSubscription(SubscriptionCreateDto subscriptionCreateDto);
     @Mapping(target = "id", ignore = true) // Protect the primary key from being overwritten
+    // updating the subscription with values from the dto ignoring the null values
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateSubscriptionFromDto(SubscriptionUpdateDto dto, @MappingTarget Subscription subscription);
 }

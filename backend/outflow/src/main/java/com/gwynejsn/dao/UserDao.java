@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface UserDao extends JpaRepository<User, UUID> {
     User findByUsername(String username);
     boolean existsByUsername(String username);
+
+    void deleteByUsername(String username);
 }
