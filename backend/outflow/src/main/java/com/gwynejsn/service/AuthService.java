@@ -1,6 +1,8 @@
 package com.gwynejsn.service;
 
 import com.gwynejsn.dto.JwtDto;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -52,5 +54,13 @@ public class AuthService {
         //  SignatureAlgorithm.HS256
         byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public Claims validateToken(String token) throws JwtException {
+        return  Jwts.parser()
+                    .verifyWith(getSignInKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getPayload();
     }
 }
