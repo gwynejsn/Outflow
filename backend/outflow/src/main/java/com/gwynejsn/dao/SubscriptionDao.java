@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface SubscriptionDao extends JpaRepository<Subscription, UUID> {
+    public boolean existsByTitle(String title);
 }

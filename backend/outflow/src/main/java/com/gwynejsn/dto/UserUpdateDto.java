@@ -2,13 +2,12 @@ package com.gwynejsn.dto;
 
 import com.gwynejsn.enums.Role;
 
-import java.util.UUID;
-
-public record UserDto(
+public record UserUpdateDto (
         String username,
+        String password,
         Role role,
         String firstName,
         String lastName,
         String email
-) {
+){
 }
