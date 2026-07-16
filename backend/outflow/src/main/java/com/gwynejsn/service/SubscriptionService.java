@@ -4,15 +4,19 @@ import com.gwynejsn.dao.SubscriptionDao;
 import com.gwynejsn.exception.AlreadyExistException;
 import com.gwynejsn.exception.NotFoundException;
 import com.gwynejsn.model.Subscription;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class SubscriptionService {
     private final SubscriptionDao subscriptionDao;
+    @Value("${notification.expiration.email.lead.time}")
+    private int emailExpirationNotificationLeadTime;
 
     public SubscriptionService(SubscriptionDao subscriptionDao) {
         this.subscriptionDao = subscriptionDao;
@@ -25,6 +29,13 @@ public class SubscriptionService {
     public Subscription getSubscriptionById(UUID id) {
         return subscriptionDao.findById(id)
                 .orElseThrow(() -> new NotFoundException("Subscription with id " + id + " does not exist"));
+    }
+
+    public List<Subscription> getExpiringSubscriptions() {
+        return subscriptionDao.findSubscriptionsExpiringBetween(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(emailExpirationNotificationLeadTime)
+        );
     }
 
     @Transactional
