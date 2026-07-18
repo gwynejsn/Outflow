@@ -1,11 +1,13 @@
-package com.gwynejsn.dto;
+package com.gwynejsn.dto.subscription;
 
 import com.gwynejsn.enums.Category;
 import com.gwynejsn.enums.Cycle;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record SubscriptionCreateDto(
+        String username,
         String title,
         String description,
         Float price,

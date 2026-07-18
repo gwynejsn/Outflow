@@ -1,6 +1,6 @@
 package com.gwynejsn.exception;
 
-import com.gwynejsn.dto.ExceptionDto;
+import com.gwynejsn.dto.exception.ExceptionDto;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;

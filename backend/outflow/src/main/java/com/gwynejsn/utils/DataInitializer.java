@@ -3,7 +3,9 @@ package com.gwynejsn.utils;
 import com.gwynejsn.dao.UserDao;
 import com.gwynejsn.enums.Category;
 import com.gwynejsn.enums.Cycle;
+import com.gwynejsn.enums.ExpirationType;
 import com.gwynejsn.enums.Role;
+import com.gwynejsn.model.Notification;
 import com.gwynejsn.model.Subscription;
 import com.gwynejsn.model.User;
 import org.springframework.context.ApplicationListener;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class DataInitializer implements ApplicationListener<ContextRefreshedEvent> {
@@ -38,6 +41,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 "System",
                 "Administrator",
                 "admin@outflow.com",
+                new ArrayList<>(),
                 new ArrayList<>()
         );
 
@@ -48,6 +52,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 "John",
                 "Student",
                 "student@outflow.com",
+                new ArrayList<>(),
                 new ArrayList<>()
         );
 
@@ -75,11 +80,27 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 LocalDateTime.now().plusDays(25)
         );
 
+        Notification netflixNotification = new Notification(
+                ExpirationType.NEARING_EXPIRATION,
+                "Your Netflix Premium subscription renewed successfully.",
+                studentUser,
+                netflix
+        );
+
+        Notification spotifyNotification = new Notification(
+                ExpirationType.EXPIRED,
+                "Warning: Your Spotify Premium Duo subscription is expiring in 2 days!",
+                studentUser,
+                spotify
+        );
+
         netflix.setUser(studentUser);
         spotify.setUser(studentUser);
 
         studentUser.getSubscriptions().add(netflix);
         studentUser.getSubscriptions().add(spotify);
+
+        studentUser.setNotifications(List.of(netflixNotification, spotifyNotification));
 
         userDao.save(adminUser);
         userDao.save(studentUser);

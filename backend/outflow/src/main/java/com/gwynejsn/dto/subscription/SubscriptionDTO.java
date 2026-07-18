@@ -1,4 +1,4 @@
-package com.gwynejsn.dto;
+package com.gwynejsn.dto.subscription;
 
 import com.gwynejsn.enums.Category;
 import com.gwynejsn.enums.Cycle;
