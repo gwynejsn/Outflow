@@ -1,4 +1,4 @@
-package com.gwynejsn.dto;
+package com.gwynejsn.dto.exception;
 
 import org.springframework.http.HttpStatus;
 

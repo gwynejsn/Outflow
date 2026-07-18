@@ -28,16 +28,24 @@ public class User {
             cascade = CascadeType.ALL
     )
     private List<Subscription> subscriptions;
+    @OneToMany(
+            mappedBy = "user",
+            orphanRemoval = true,
+            cascade = CascadeType.ALL
+    )
+    private List<Notification> notifications;
 
-    public User() {}
+    public User() {
+    }
 
-    public User(String username, String password, Role role, String firstName, String lastName, String email, List<Subscription> subscriptions) {
+    public User(String username, String password, Role role, String firstName, String lastName, String email, List<Notification> notifications, List<Subscription> subscriptions) {
         this.username = username;
         this.password = password;
         this.role = role;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.notifications = notifications;
         this.subscriptions = subscriptions;
     }
 
@@ -96,6 +104,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 
     public List<Subscription> getSubscriptions() {

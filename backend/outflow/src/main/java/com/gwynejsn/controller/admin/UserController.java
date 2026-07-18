@@ -1,8 +1,8 @@
-package com.gwynejsn.controller;
+package com.gwynejsn.controller.admin;
 
-import com.gwynejsn.dto.UserCreateDto;
-import com.gwynejsn.dto.UserDto;
-import com.gwynejsn.dto.UserUpdateDto;
+import com.gwynejsn.dto.user.UserCreateDto;
+import com.gwynejsn.dto.user.UserDto;
+import com.gwynejsn.dto.user.UserUpdateDto;
 import com.gwynejsn.model.User;
 import com.gwynejsn.service.UserService;
 import com.gwynejsn.utils.mappers.UserMapper;
@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Admin can manage any users
+ */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/admin/users")
 public class UserController {
     private final UserService userService;
 

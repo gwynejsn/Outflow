@@ -1,6 +1,6 @@
 package com.gwynejsn.service;
 
-import com.gwynejsn.dto.JwtDto;
+import com.gwynejsn.dto.auth.JwtDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

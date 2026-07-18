@@ -1,8 +1,6 @@
-package com.gwynejsn.dto;
+package com.gwynejsn.dto.user;
 
 import com.gwynejsn.enums.Role;
-
-import java.util.UUID;
 
 public record UserDto(
         String username,

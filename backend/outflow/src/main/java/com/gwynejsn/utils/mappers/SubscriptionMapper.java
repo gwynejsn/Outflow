@@ -1,8 +1,8 @@
 package com.gwynejsn.utils.mappers;
 
-import com.gwynejsn.dto.SubscriptionCreateDto;
-import com.gwynejsn.dto.SubscriptionDTO;
-import com.gwynejsn.dto.SubscriptionUpdateDto;
+import com.gwynejsn.dto.subscription.SubscriptionCreateDto;
+import com.gwynejsn.dto.subscription.SubscriptionDTO;
+import com.gwynejsn.dto.subscription.SubscriptionUpdateDto;
 import com.gwynejsn.model.Subscription;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;

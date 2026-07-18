@@ -1,8 +1,8 @@
-package com.gwynejsn.controller;
+package com.gwynejsn.controller.admin;
 
-import com.gwynejsn.dto.SubscriptionCreateDto;
-import com.gwynejsn.dto.SubscriptionDTO;
-import com.gwynejsn.dto.SubscriptionUpdateDto;
+import com.gwynejsn.dto.subscription.SubscriptionCreateDto;
+import com.gwynejsn.dto.subscription.SubscriptionDTO;
+import com.gwynejsn.dto.subscription.SubscriptionUpdateDto;
 import com.gwynejsn.model.Subscription;
 import com.gwynejsn.service.SubscriptionService;
 import com.gwynejsn.utils.mappers.SubscriptionMapper;
@@ -14,8 +14,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Admin can manage any subscriptions
+ */
+
 @RestController
-@RequestMapping("/subscriptions")
+@RequestMapping("/admin/subscriptions")
 public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
