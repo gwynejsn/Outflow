@@ -19,4 +19,14 @@ public interface SubscriptionDao extends JpaRepository<Subscription, UUID> {
             @Param("startOfExp") LocalDateTime startOfExp,
             @Param("endOfExp") LocalDateTime endOfExp
     );
+
+    List<Subscription> findSubscriptionByUserId(UUID userId);
+
+    @Query("SELECT s FROM Subscription s " +
+            "WHERE s.id = :subscriptionId " +
+            "AND s.user.id = :userId")
+    Subscription findByIdAndUserId(
+            @Param("userId") UUID userId,
+            @Param("subscriptionId") UUID subscriptionId
+    );
 }

@@ -23,9 +23,11 @@ public class AccountController {
 
     @GetMapping()
     public ResponseEntity<UserDto> getAccount(HttpServletRequest request) {
-        return ResponseEntity.ok(
-                UserMapper.INSTANCE.mapUserToDto((User) request.getUserPrincipal())
-        );
+        String currentUsername = request.getUserPrincipal().getName();
+
+        User user = userService.findByUsername(currentUsername);
+
+        return ResponseEntity.ok(UserMapper.INSTANCE.mapUserToDto(user));
     }
 
     @PutMapping("/update")
@@ -33,12 +35,13 @@ public class AccountController {
             HttpServletRequest request,
             @RequestBody UserUpdateDto userUpdateDto
     ) {
-        User oldUser = (User) request.getUserPrincipal();
-        UserMapper.INSTANCE.updateUserFromDto(userUpdateDto, oldUser);
-        User updatedUser = userService.updateUser(
-                userUpdateDto.username(),
-                oldUser
-        );
+        String currentUsername = request.getUserPrincipal().getName();
+
+        User currentUser = userService.findByUsername(currentUsername);
+
+        UserMapper.INSTANCE.updateUserFromDto(userUpdateDto, currentUser);
+
+        User updatedUser = userService.updateUser(currentUsername, currentUser);
 
         return ResponseEntity.ok(UserMapper.INSTANCE.mapUserToDto(updatedUser));
     }

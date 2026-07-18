@@ -92,14 +92,17 @@ public class SubscriptionServiceTest {
             AND: an Already exist exception is thrown
             """)
     public void saveSubscription_WhenAlreadyExists_ShouldThrowAlreadyExistException() {
+        String username = "test";
         Subscription subscription = createTestSubscription(UUID.randomUUID());
         when(subscriptionDao.existsById(subscription.getId())).thenReturn(true);
 
-        assertThrows(AlreadyExistException.class, () -> subscriptionService.saveSubscription(subscription));
+        assertThrows(AlreadyExistException.class, () -> subscriptionService.saveSubscription(username, subscription));
 
         verify(subscriptionDao, times(1)).existsById(subscription.getId());
         verify(subscriptionDao, never()).save(any(Subscription.class));
     }
+
+    // TODO: add what happens if user does not exist
 
     @Test
     @DisplayName("""
@@ -109,6 +112,7 @@ public class SubscriptionServiceTest {
             AND: no exception is thrown
             """)
     public void saveSubscription_WhenDoesNotExist_ShouldSaveSuccessfully() {
+        String username = "test";
         UUID subscriptionId = UUID.randomUUID();
         Subscription subscriptionToBeSaved = createTestSubscription(subscriptionId);
         Subscription mockSavedResult = createTestSubscription(subscriptionId);
@@ -116,7 +120,7 @@ public class SubscriptionServiceTest {
         when(subscriptionDao.existsById(subscriptionId)).thenReturn(false);
         when(subscriptionDao.save(subscriptionToBeSaved)).thenReturn(mockSavedResult);
 
-        Subscription result = subscriptionService.saveSubscription(subscriptionToBeSaved);
+        Subscription result = subscriptionService.saveSubscription(username, subscriptionToBeSaved);
 
         assertNotNull(result);
         assertEquals(subscriptionId, result.getId());
