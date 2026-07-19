@@ -40,7 +40,6 @@ public class SubscriptionServiceTest {
                 Cycle.MONTHLY,
                 Category.ENTERTAINMENT,
                 LocalDateTime.now().minusMonths(3),
-                LocalDateTime.now(),
                 LocalDateTime.now().plusMonths(1)
         );
         if (id != null) subscription.setId(id);

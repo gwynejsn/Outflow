@@ -14,7 +14,6 @@ public record SubscriptionUpdateDto(
         String imageUrl,
         Cycle cycle,
         Category category,
-        LocalDateTime renewedAt,
         LocalDateTime expiresAt
 ) {
 }

@@ -26,8 +26,6 @@ public class Subscription {
     private Cycle cycle;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @Column(name = "renewed_at")
-    private LocalDateTime renewedAt;
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,7 +34,7 @@ public class Subscription {
 
     public Subscription() {}
 
-    public Subscription(String title, String description, Float price, String imageUrl, Cycle cycle, Category category, LocalDateTime createdAt, LocalDateTime renewedAt, LocalDateTime expiresAt) {
+    public Subscription(String title, String description, Float price, String imageUrl, Cycle cycle, Category category, LocalDateTime createdAt, LocalDateTime expiresAt) {
         this.title = title;
         this.description = description;
         this.price = price;
@@ -44,7 +42,6 @@ public class Subscription {
         this.cycle = cycle;
         this.category = category;
         this.createdAt = createdAt;
-        this.renewedAt = renewedAt;
         this.expiresAt = expiresAt;
     }
 
@@ -103,14 +100,6 @@ public class Subscription {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getRenewedAt() {
-        return renewedAt;
-    }
-
-    public void setRenewedAt(LocalDateTime renewedAt) {
-        this.renewedAt = renewedAt;
     }
 
     public LocalDateTime getExpiresAt() {
