@@ -3,6 +3,7 @@ package com.gwynejsn.service;
 import com.gwynejsn.dao.SubscriptionDao;
 import com.gwynejsn.exception.AlreadyExistException;
 import com.gwynejsn.exception.NotFoundException;
+import com.gwynejsn.model.ExpiringSubscription;
 import com.gwynejsn.model.Subscription;
 import com.gwynejsn.model.User;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +47,7 @@ public class SubscriptionService {
                 .orElseThrow(() -> new NotFoundException("Subscription with id " + id + " does not exist"));
     }
 
-    public List<Subscription> getExpiringSubscriptions() {
+    public List<ExpiringSubscription> getExpiringSubscriptions() {
         return subscriptionDao.findSubscriptionsExpiringBetween(
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(emailExpirationNotificationLeadTime)

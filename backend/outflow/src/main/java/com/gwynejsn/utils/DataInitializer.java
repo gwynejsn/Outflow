@@ -64,7 +64,6 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 Cycle.MONTHLY,
                 Category.ENTERTAINMENT,
                 LocalDateTime.now().minusMonths(3),
-                LocalDateTime.now(),
                 LocalDateTime.now().plusMonths(1)
         );
 
@@ -76,9 +75,20 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 Cycle.WEEKLY,
                 Category.ENTERTAINMENT,
                 LocalDateTime.now().minusMonths(6),
-                LocalDateTime.now().minusDays(5),
                 LocalDateTime.now().plusDays(25)
         );
+
+        Subscription spotifyNearExpired = new Subscription(
+                "Spotify Premium Duo",
+                "Ad-free music streaming for two accounts.",
+                149.00f,
+                "https://example.com/images/spotify.png",
+                Cycle.WEEKLY,
+                Category.ENTERTAINMENT,
+                LocalDateTime.now().minusDays(5), // Started 5 days ago
+                LocalDateTime.now().plusDays(2)    // Expires in exactly 2 days
+        );
+
 
         Notification netflixNotification = new Notification(
                 ExpirationType.NEARING_EXPIRATION,
@@ -96,9 +106,11 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
 
         netflix.setUser(studentUser);
         spotify.setUser(studentUser);
+        spotifyNearExpired.setUser(studentUser);
 
         studentUser.getSubscriptions().add(netflix);
         studentUser.getSubscriptions().add(spotify);
+        studentUser.getSubscriptions().add(spotifyNearExpired);
 
         studentUser.setNotifications(List.of(netflixNotification, spotifyNotification));
 

@@ -15,7 +15,6 @@ public record SubscriptionDTO(
     Cycle cycle,
     Category category,
     LocalDateTime createdAt,
-    LocalDateTime renewedAt,
     LocalDateTime expiresAt
 ){
 }
