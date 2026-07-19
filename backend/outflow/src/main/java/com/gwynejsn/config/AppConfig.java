@@ -38,16 +38,23 @@ public class AppConfig {
     private String emailUsername;
     @Value("${spring.mail.password}")
     private String emailPassword;
+    @Value("${db.driver}")
+    private String dbDriver;
+    @Value("${db.url}")
+    private String dbUrl;
+    @Value("${db.user}")
+    private String dbUser;
+    @Value("${db.pass}")
+    private String dbPassword;
 
 
     @Bean
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
-        config.setDriverClassName("org.postgresql.Driver");
-//        config.setJdbcUrl("jdbc:postgresql://outflow-postgres-db:5432/outflow_db?sslmode=disable");
-        config.setJdbcUrl("jdbc:postgresql://localhost:1997/outflow_db?sslmode=disable");
-        config.setUsername("springuser");
-        config.setPassword("springpass");
+        config.setDriverClassName(dbDriver);
+        config.setJdbcUrl(dbUrl);
+        config.setUsername(dbUser);
+        config.setPassword(dbPassword);
         return new HikariDataSource(config);
     }
 
