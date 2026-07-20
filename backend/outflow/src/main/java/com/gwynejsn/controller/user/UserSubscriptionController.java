@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/user/subscriptions")
+@RequestMapping("/api/user/subscriptions")
 public class UserSubscriptionController {
     private final SubscriptionService subscriptionService;
     private final UserService userService;

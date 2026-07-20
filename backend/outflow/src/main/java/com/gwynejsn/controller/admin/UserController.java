@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Admin can manage any users
  */
 @RestController
-@RequestMapping("/admin/users")
+@RequestMapping("/api/admin/users")
 public class UserController {
     private final UserService userService;
 

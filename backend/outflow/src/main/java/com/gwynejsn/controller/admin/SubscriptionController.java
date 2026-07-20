@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 
 @RestController
-@RequestMapping("/admin/subscriptions")
+@RequestMapping("/api/admin/subscriptions")
 public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
