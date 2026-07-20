@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * Manages own user account
  */
 @RestController
-@RequestMapping("/user/account")
+@RequestMapping("/api/user/account")
 public class AccountController {
     private final UserService userService;
 

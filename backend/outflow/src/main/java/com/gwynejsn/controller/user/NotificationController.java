@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/user/notifications")
+@RequestMapping("/api/user/notifications")
 public class NotificationController {
     private final UserService userService;
     private final InAppNotificationService inAppNotificationService;
