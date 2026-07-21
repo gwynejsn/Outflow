@@ -32,3 +32,18 @@
 # --- Operating Systems ---
 **/.DS_Store
 Thumbs.db
+
+# --- Frontend ---
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/*.local
+**/.env
+**/.env.*
+**/.nitro/
+**/.tanstack/
+**/.wrangler/
+**/.output/
+**/.vinxi/
+**/__unconfig*
+**/todos.json
