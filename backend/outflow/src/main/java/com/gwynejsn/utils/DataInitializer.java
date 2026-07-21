@@ -46,7 +46,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
         );
 
         User studentUser = new User(
-                "student",
+                "student@gmail.com",
                 passwordEncoder.encode("student123"),
                 Role.USER,
                 "John",
