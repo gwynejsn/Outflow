@@ -10,9 +10,10 @@ const config = defineConfig({
   resolve: { tsconfigPaths: true },
   server: {
     port: 3000,
+    host: true,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:9090/outflow',
+        target: 'http://backend:8080',
         changeOrigin: true,
       },
     },

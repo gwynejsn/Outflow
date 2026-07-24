@@ -1,23 +1,26 @@
-# Outflow Backend
+# Outflow
 
-A Spring MVC backend for tracking subscriptions, monitoring expiration dates, and sending automated in-app and email notifications.
+A full-stack subscription tracking application with automated expiration warnings and in-app/email notifications.
 
 > **Note**
 >
-> This project is built using the **Spring Framework (Spring MVC)** directly and **does not use Spring Boot**. Configuration, dependency injection, servlet initialization, security, database persistence, transaction management, and scheduled tasks are all explicitly configured in Java code to explore Spring Framework internals.
+> The backend is built using the **Spring Framework (Spring MVC)** directly and **does not use Spring Boot**. Configuration, dependency injection, servlet initialization, security, database persistence, transaction management, and scheduled tasks are all explicitly configured in Java code to explore Spring Framework internals.
 
 ---
 
 ## Table of Contents
 
+- [Screenshots](#screenshots)
 - [Features](#features)
 - [Architecture & Tech Stack](#architecture--tech-stack)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Database Setup](#database-setup)
+  - [Running with Docker Compose](#running-with-docker-compose)
+  - [Running Locally (Development)](#running-locally-development)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
   - [Configuration](#configuration)
-  - [Build & Run](#build--run)
   - [Default Credentials](#default-credentials)
 - [Security & Authentication](#security--authentication)
 - [API Reference](#api-reference)
@@ -30,6 +33,15 @@ A Spring MVC backend for tracking subscriptions, monitoring expiration dates, an
 - [Background Scheduler & Notifications](#background-scheduler--notifications)
 - [References](#references)
 - [Lessons Learned](#lessons-learned)
+- 
+---
+
+# Screenshots
+![App Screenshot 1](./readme_assets/1.png)
+![App Screenshot 2](./readme_assets/2.png)
+![App Screenshot 3](./readme_assets/3.png)
+![App Screenshot 4](./readme_assets/4.png)
+![App Screenshot 5](./readme_assets/5.png)
 
 ---
 
@@ -44,6 +56,7 @@ A Spring MVC backend for tracking subscriptions, monitoring expiration dates, an
 - **Data Seeding**: Automatic database initialization with test admin and user accounts on startup.
 - **Aspect-Oriented Logging**: Execution logging across service methods using AspectJ AOP.
 - **Object Mapping**: Type-safe DTO-to-Entity conversion using MapStruct.
+- **Reactive Frontend**: SPA built with React 19, TanStack Router, TanStack Query, and GSAP animations.
 
 ---
 
@@ -52,16 +65,18 @@ A Spring MVC backend for tracking subscriptions, monitoring expiration dates, an
 Outflow follows a classic multi-tier layered architecture:
 
 ```
-Controller Layer (REST Endpoints)
-       ↓
- Service Layer (Business Logic & Notifications)
-       ↓
-   DAO Layer (Spring Data JPA Repositories)
-       ↓
-Database (PostgreSQL / H2)
+  React SPA (Vite + TanStack Router)
+           ↓ HTTP / REST
+  Controller Layer (Spring MVC REST Endpoints)
+           ↓
+   Service Layer (Business Logic & Notifications)
+           ↓
+     DAO Layer (Spring Data JPA Repositories)
+           ↓
+    Database (PostgreSQL 17)
 ```
 
-## Core Technologies
+## Backend
 
 | Component        | Technology                            |
 | ---------------- | ------------------------------------- |
@@ -71,7 +86,7 @@ Database (PostgreSQL / H2)
 | Security         | Spring Security 6.5.11 + JWT (0.13.0) |
 | Persistence      | Spring Data JPA 3.2.4                 |
 | ORM              | Hibernate ORM 6.4.4.Final             |
-| Database         | PostgreSQL 17 (Production) / H2       |
+| Database         | PostgreSQL 17                         |
 | Connection Pool  | HikariCP 5.1.0                        |
 | Mail Sender      | Spring Mail + Angus Mail 2.0.5        |
 | Object Mapping   | MapStruct 1.6.3                       |
@@ -82,41 +97,69 @@ Database (PostgreSQL / H2)
 | Build Tool       | Maven 3.9                             |
 | Containerization | Docker & Docker Compose               |
 
+## Frontend
+
+| Component       | Technology                          |
+| --------------- | ----------------------------------- |
+| Language        | TypeScript                          |
+| UI Library      | React 19                            |
+| Build Tool      | Vite 8                              |
+| Routing         | TanStack Router (file-based)        |
+| Data Fetching   | TanStack Query (React Query v5)     |
+| HTTP Client     | Axios                               |
+| Styling         | Tailwind CSS v4                     |
+| UI Components   | shadcn/ui + Base UI                 |
+| Animations      | GSAP 3                              |
+| Forms           | React Hook Form                     |
+| Icons           | Lucide React                        |
+
 ---
 
 # Project Structure
 
 ```
 Outflow
-├── compose.yaml                    # Docker Compose for PostgreSQL 17 (port 1997)
-└── backend
+├── compose.yaml                      # Docker Compose (PostgreSQL, backend, frontend)
+├── backend
+│   └── outflow
+│       ├── Dockerfile                # Multi-stage build (Maven 3.9 + Tomcat 10.1)
+│       ├── pom.xml
+│       └── src
+│           ├── main
+│           │   ├── java
+│           │   │   └── com.gwynejsn
+│           │   │       ├── App.java
+│           │   │       ├── aop             # AspectJ Service Logging
+│           │   │       ├── config          # Java Configuration (AppConfig, SecurityConfig)
+│           │   │       ├── controller      # REST Controllers (Auth, User, Admin)
+│           │   │       ├── dao             # Spring Data JPA Repositories
+│           │   │       ├── dto             # Data Transfer Objects
+│           │   │       ├── enums           # Category, Cycle, ExpirationType, Role
+│           │   │       ├── exception       # Custom Exceptions & GlobalExceptionHandler
+│           │   │       ├── filter          # JwtAuthenticationFilter
+│           │   │       ├── model           # JPA Entities (User, Subscription, Notification)
+│           │   │       ├── scheduler       # SubscriptionExpirationNotificationScheduler
+│           │   │       ├── service         # AuthService, UserService, SubscriptionService
+│           │   │       └── utils           # DataInitializer, MapStruct mappers
+│           │   └── resources
+│           │       └── application.properties
+│           └── test
+│               └── java
+│                   └── com.gwynejsn
+│                       └── SubscriptionServiceTest.java
+└── frontend
     └── outflow
-        ├── Dockerfile              # Multi-stage build (Maven 3.9 + Tomcat 10.1)
-        ├── pom.xml                 # Maven dependencies & build configuration
-        └── src
-            ├── main
-            │   ├── java
-            │   │   └── com.gwynejsn
-            │   │       ├── App.java
-            │   │       ├── aop             # AspectJ Service Logging
-            │   │       ├── config          # Java Configuration (AppConfig, SecurityConfig)
-            │   │       ├── controller      # REST Controllers (Auth, User, Admin)
-            │   │       ├── dao             # Spring Data JPA Repositories (UserDao, SubscriptionDao, NotificationDao)
-            │   │       ├── dto             # Data Transfer Objects (Auth, Subscriptions, Users, Notifications)
-            │   │       ├── enums           # Category, Cycle, ExpirationType, Role
-            │   │       ├── exception       # Custom Exceptions & GlobalExceptionHandler
-            │   │       ├── filter          # JwtAuthenticationFilter
-            │   │       ├── model           # JPA Entities (User, Subscription, Notification, ExpiringSubscription)
-            │   │       ├── scheduler       # SubscriptionExpirationNotificationScheduler
-            │   │       ├── security        # SecurityWebApplicationInitializer
-            │   │       ├── service         # AuthService, UserService, SubscriptionService, Notification Services
-            │   │       └── utils           # DataInitializer, MapStruct mappers
-            │   └── resources
-            │       └── application.properties # App & Database Configuration
-            └── test
-                └── java
-                    └── com.gwynejsn
-                        └── SubscriptionServiceTest.java # Unit & Mockito Tests
+        ├── Dockerfile                # Node 22 Alpine image
+        ├── src
+        │   ├── api                   # Axios client & typed API functions
+        │   ├── components            # Shared UI components (Navbar, etc.)
+        │   ├── context               # AuthContext (JWT state, interceptors)
+        │   ├── hooks                 # TanStack Query hooks (useSubscriptions, useAdminUsers, etc.)
+        │   └── routes                # File-based routes (TanStack Router)
+        │       ├── auth              # login.tsx, register.tsx
+        │       └── _user             # Protected layout + dashboard, account, admin pages
+        ├── package.json
+        └── vite.config.ts
 ```
 
 ---
@@ -125,33 +168,101 @@ Outflow
 
 ## Prerequisites
 
+- **Docker & Docker Compose** (recommended — runs everything automatically)
+
+For local development only:
 - **Java JDK 17+**
 - **Maven 3.9+**
-- **Docker & Docker Compose** (or local PostgreSQL 17 server)
-- **Apache Tomcat 10.1+ / 11** (for local WAR deployment)
+- **Node.js 22+** & **npm**
+- **Apache Tomcat 10.1+** (for WAR deployment)
 
 ---
 
-## Database Setup
+## Running with Docker Compose
 
-Start the PostgreSQL 17 database container using Docker Compose:
+The easiest way to get the entire stack (database, backend, frontend) running is with a single command from the project root:
+
+```bash
+docker compose up --build
+```
+
+This will spin up three containers:
+
+| Service               | Container Name       | URL                           |
+| --------------------- | -------------------- | ----------------------------- |
+| Frontend (React)      | `outflow-frontend`   | http://localhost:3000         |
+| Backend (Spring MVC)  | `outflow-backend`    | http://localhost:8080/outflow |
+| Database (PostgreSQL) | `outflow-postgres-db`| `localhost:1997`              |
+
+The backend container waits for the database to pass its health check before starting. The frontend container waits for the backend to be available.
+
+To stop all services:
+
+```bash
+docker compose down
+```
+
+To stop and also remove the database volume (fresh start):
+
+```bash
+docker compose down -v
+```
+
+> **Note**: Update `spring.mail.username` and `spring.mail.password` in `backend/outflow/src/main/resources/application.properties` with your SMTP credentials before building if you want email notifications to work.
+
+---
+
+## Running Locally (Development)
+
+### Backend
+
+**1. Start the database:**
 
 ```bash
 docker compose up outflow-postgres-db -d
 ```
 
-This launches PostgreSQL configured with:
+**2. Build and deploy the WAR:**
 
-- **Port**: `1997` (mapped to container port `5432`)
-- **Database**: `outflow_db`
-- **Username**: `springuser`
-- **Password**: `springpass`
+```bash
+cd backend/outflow
+mvn clean package
+```
+
+This produces `target/outflow-1.0-SNAPSHOT.war`. Deploy it to a local Tomcat instance or run Tomcat directly:
+
+```bash
+/path/to/tomcat/bin/catalina.sh run
+```
+
+Backend base URL: `http://localhost:8080/outflow`
+
+---
+
+### Frontend
+
+**1. Install dependencies:**
+
+```bash
+cd frontend/outflow
+npm install
+```
+
+**2. Start the dev server:**
+
+```bash
+npm run dev
+```
+
+Frontend URL: `http://localhost:3000`
+
+> The frontend dev server proxies API calls to `http://localhost:8080/outflow`. Ensure the backend is running before using the app.
 
 ---
 
 ## Configuration
 
-Application configuration is stored in `backend/outflow/src/main/resources/application.properties`:
+Application configuration is in `backend/outflow/src/main/resources/application.properties`:
 
 ```properties
 security.jwt.secret=55d1365cb035aab7ac0ff4abfb2182b0ee7b2ea5bbe26cbd078b9b99fe4f1356
@@ -170,55 +281,20 @@ spring.mail.username=YOUR_USERNAME
 spring.mail.password=YOUR_SMTP_KEY
 ```
 
-> **Note**: Update `spring.mail.username` and `spring.mail.password` with your SMTP provider details if testing email notifications.
-
----
-
-## Build & Run
-
-### 1. Build the Application
-
-Navigate to the project root directory and compile with Maven:
-
-```bash
-cd backend/outflow
-mvn clean package
-```
-
-This creates `target/outflow-1.0-SNAPSHOT.war`.
-
-### 2. Deploy to Tomcat
-
-Copy the generated WAR file into Apache Tomcat's `webapps/` directory or run Tomcat:
-
-```bash
-/path/to/tomcat/bin/catalina.sh run
-```
-
-Application Base URL:
-
-```
-http://localhost:8080/outflow
-```
-
-### 3. Run with Docker
-
-Alternatively, build and containerize the application using the multi-stage `Dockerfile`:
-
-```bash
-docker build -t outflow-backend backend/outflow
-```
+> When running inside Docker Compose, the backend uses the internal service hostname (`outflow-postgres-db`) instead of `localhost`.
 
 ---
 
 ## Default Credentials
 
-The `DataInitializer` bean populates the database with initial mock users on startup:
+The `DataInitializer` bean seeds the database with mock users on startup:
 
-| Role  | Username  | Password     | Email                 |
-| ----- | --------- | ------------ | --------------------- |
-| ADMIN | `admin`   | `admin123`   | `admin@outflow.com`   |
-| USER  | `student` | `student123` | `student@outflow.com` |
+| Role  | Email                   | Password     |
+| ----- | ----------------------- | ------------ |
+| ADMIN | `admin@outflow.com`     | `Admin123!`  |
+| USER  | `student@outflow.com`   | `Student123!`|
+
+> **Note**: Passwords must now meet the complexity requirements (min 8 chars, uppercase, lowercase, number, special character).
 
 ---
 
@@ -228,7 +304,7 @@ Authentication is stateless and uses JSON Web Tokens (JWT).
 
 ### Request Header Syntax
 
-Protected endpoints require a valid JWT token passed in the HTTP Authorization header:
+Protected endpoints require a valid JWT token in the `Authorization` header:
 
 ```http
 Authorization: Bearer <your_jwt_token>
@@ -236,9 +312,11 @@ Authorization: Bearer <your_jwt_token>
 
 ### Access Control Rules
 
-- `/api/auth/login` - Publicly accessible
-- `/api/user/**` - Requires `ROLE_USER`
-- `/api/admin/**` - Requires `ROLE_ADMIN`
+- `/api/auth/**` — Publicly accessible
+- `/api/user/**` — Requires `ROLE_USER`
+- `/api/admin/**` — Requires `ROLE_ADMIN`
+
+The JWT expires after the configured number of minutes (`security.jwt.expires`). The frontend automatically clears session state and redirects to login on `401 Unauthorized` responses.
 
 ---
 
@@ -251,7 +329,7 @@ Base Path: `/api/auth`
 | Method | Endpoint  | Access | Description                            |
 | ------ | --------- | ------ | -------------------------------------- |
 | POST   | `/login`  | Public | Authenticate user & receive JWT token. |
-| POST   | `/create` | Public | Register a new user.                   |
+| POST   | `/create` | Public | Register a new user account.           |
 
 ---
 
@@ -270,11 +348,12 @@ Base Path: `/api/user/account`
 
 Base Path: `/api/user/subscriptions`
 
-| Method | Endpoint  | Access    | Description                                  |
-| ------ | --------- | --------- | -------------------------------------------- |
-| GET    | `/`       | ROLE_USER | Retrieve all subscriptions for current user. |
-| POST   | `/create` | ROLE_USER | Add a new subscription for current user.     |
-| PUT    | `/update` | ROLE_USER | Update an existing subscription.             |
+| Method | Endpoint       | Access    | Description                                  |
+| ------ | -------------- | --------- | -------------------------------------------- |
+| GET    | `/`            | ROLE_USER | Retrieve all subscriptions for current user. |
+| POST   | `/create`      | ROLE_USER | Add a new subscription.                      |
+| PUT    | `/update`      | ROLE_USER | Update an existing subscription.             |
+| DELETE | `/delete/{id}` | ROLE_USER | Delete a subscription by UUID.               |
 
 ---
 
@@ -284,7 +363,7 @@ Base Path: `/api/user/notifications`
 
 | Method | Endpoint | Access    | Description                                                                                        |
 | ------ | -------- | --------- | -------------------------------------------------------------------------------------------------- |
-| GET    | `/`      | ROLE_USER | Retrieve notifications (Optional query param `expirationType`: `EXPIRED` or `NEARING_EXPIRATION`). |
+| GET    | `/`      | ROLE_USER | Retrieve notifications (optional query param `expirationType`: `EXPIRED` or `NEARING_EXPIRATION`). |
 | GET    | `/clear` | ROLE_USER | Clear all notifications for the authenticated user.                                                |
 
 ---
@@ -293,13 +372,13 @@ Base Path: `/api/user/notifications`
 
 Base Path: `/api/admin/users`
 
-| Method | Endpoint             | Access     | Description                 |
-| ------ | -------------------- | ---------- | --------------------------- |
-| GET    | `/`                  | ROLE_ADMIN | Retrieve list of all users. |
-| GET    | `/{username}`        | ROLE_ADMIN | Retrieve user by username.  |
-| POST   | `/create`            | ROLE_ADMIN | Create a new user.          |
-| PUT    | `/update`            | ROLE_ADMIN | Update an existing user.    |
-| DELETE | `/delete/{username}` | ROLE_ADMIN | Delete a user by username.  |
+| Method | Endpoint        | Access     | Description                      |
+| ------ | --------------- | ---------- | -------------------------------- |
+| GET    | `/`             | ROLE_ADMIN | Retrieve list of all users.      |
+| GET    | `/email/{email}`| ROLE_ADMIN | Retrieve a user by email.        |
+| POST   | `/create`       | ROLE_ADMIN | Create a new user.               |
+| PUT    | `/update`       | ROLE_ADMIN | Update an existing user.         |
+| DELETE | `/delete/{id}`  | ROLE_ADMIN | Delete a user by UUID. Admins cannot delete their own account. |
 
 ---
 
@@ -328,19 +407,20 @@ Outflow runs a daily scheduled job managed by `SubscriptionExpirationNotificatio
 
 # References
 
-This project was built following official documentation for Spring Framework ecosystem components:
-
 - **Spring Framework**: [Documentation](https://docs.spring.io/spring-framework/reference/) \| [API Javadoc](https://docs.spring.io/spring-framework/docs/current/javadoc-api/)
 - **Spring Security**: [Reference Documentation](https://docs.spring.io/spring-security/reference/)
 - **Spring Data JPA**: [Reference Documentation](https://docs.spring.io/spring-data/jpa/reference/)
 - **Hibernate ORM**: [User Guide](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/)
 - **JJWT**: [Java JWT Library](https://github.com/jwtk/jjwt)
 - **PostgreSQL**: [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+- **TanStack Router**: [Documentation](https://tanstack.com/router/latest)
+- **TanStack Query**: [Documentation](https://tanstack.com/query/latest)
+- **GSAP**: [Documentation](https://gsap.com/docs/v3/)
 - https://gitlab.com/ShowMeYourCodeYouTube/spring-mvc-without-spring-boot
 
 ---
 
-## Additional Concepts Learned
+## Lessons Learned
 
 - Explored multiple approaches for database access:
   - Spring JDBC (`JdbcTemplate`)
