@@ -11,32 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1d2a3b9d-9745-4a64-9506-8049c2f07bdf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/controller/admin/SubscriptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/controller/admin/SubscriptionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/controller/admin/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/controller/admin/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/controller/user/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/controller/user/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/controller/user/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/controller/user/NotificationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/controller/user/UserSubscriptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/controller/user/UserSubscriptionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/dao/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/dto/subscription/SubscriptionCreateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/dto/subscription/SubscriptionCreateDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/dto/user/UserCreateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/dto/user/UserCreateDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/dto/user/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/dto/user/UserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/dto/user/UserUpdateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/dto/user/UserUpdateDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/model/UserDecorator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/model/UserDecorator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/service/SubscriptionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/service/SubscriptionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/service/UserDetailsServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/service/UserDetailsServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/utils/DataInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/utils/DataInitializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gwynejsn/utils/mappers/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gwynejsn/utils/mappers/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/outflow/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/outflow/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/outflow/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/outflow/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/outflow/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/outflow/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/outflow/src/routes/__root.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/outflow/src/routes/__root.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/outflow/src/routes/auth.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/outflow/src/routes/auth.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/outflow/src/routes/auth/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/outflow/src/routes/auth/login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/outflow/src/routes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/outflow/src/routes/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/outflow/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/outflow/src/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -12,16 +12,19 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class DataInitializer implements ApplicationListener<ContextRefreshedEvent> {
 
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
+    private boolean alreadySeeded = false;
 
     public DataInitializer(UserDao userDao,
                            PasswordEncoder passwordEncoder) {
@@ -30,10 +33,22 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        // Prevent re-running on nested context refreshes
+        if (alreadySeeded || event.getApplicationContext().getParent() != null) {
+            return;
+        }
 
-        userDao.deleteAll();
+        // Delete Admin User if exists
+        Optional.ofNullable(userDao.findByEmail("admin@outflow.com"))
+                .ifPresent(userDao::delete);
 
+        // Delete Student User if exists (deletes associated subscriptions & notifications via cascade)
+        Optional.ofNullable(userDao.findByEmail("student@outflow.com"))
+                .ifPresent(userDao::delete);
+
+        // Re-create Admin User
         User adminUser = new User(
                 passwordEncoder.encode("admin123"),
                 Role.ADMIN,
@@ -44,6 +59,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 new ArrayList<>()
         );
 
+        // Re-create Student User
         User studentUser = new User(
                 passwordEncoder.encode("student123"),
                 Role.USER,
@@ -83,10 +99,9 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 "https://example.com/images/spotify.png",
                 Cycle.WEEKLY,
                 Category.ENTERTAINMENT,
-                LocalDateTime.now().minusDays(5), // Started 5 days ago
-                LocalDateTime.now().plusDays(2)    // Expires in exactly 2 days
+                LocalDateTime.now().minusDays(5),
+                LocalDateTime.now().plusDays(2)
         );
-
 
         Notification netflixNotification = new Notification(
                 ExpirationType.NEARING_EXPIRATION,
@@ -114,6 +129,8 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
 
         userDao.save(adminUser);
         userDao.save(studentUser);
+
+        alreadySeeded = true;
 
         System.out.println("\n🌱 [Outflow] Mock data seeded successfully!");
         System.out.println("👤 Admin username: admin@outflow.com");

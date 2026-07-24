@@ -1,16 +1,27 @@
 name: outflow
 
 services:
-#  backend:
-#    container_name: outflow-backend
-#    build: "./backend/outflow"
-#    ports:
-#    - "8080:8080"
-#    depends_on:
-#      outflow-postgres-db:
-#        condition: service_healthy
-#    networks:
-#      - spring-postgres
+  frontend:
+    container_name: outflow-frontend
+    build: "./frontend/outflow"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - spring-react
+
+  backend:
+    container_name: outflow-backend
+    build: "./backend/outflow"
+    ports:
+    - "8080:8080"
+    depends_on:
+      outflow-postgres-db:
+        condition: service_healthy
+    networks:
+      - spring-postgres
+      - spring-react
 
   outflow-postgres-db:
     container_name: outflow-postgres-db
@@ -22,8 +33,8 @@ services:
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
     ports:
       - "1997:5432"
-#    networks:
-#      - spring-postgres
+    networks:
+      - spring-postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -33,9 +44,11 @@ services:
       retries: 5
       start_period: 10s
 
-#networks:
-#  spring-postgres:
-#    driver: bridge
+networks:
+  spring-postgres:
+    driver: bridge
+  spring-react:
+    driver: bridge
 
 volumes:
   postgres-data:
