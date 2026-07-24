@@ -14,6 +14,7 @@ public interface UserMapper {
     UserDto mapUserToDto(User user);
     User mapCreateUserDtoToUser(UserCreateDto userCreateDto);
     @Mapping(target = "id", ignore = true) // Protect the primary key from being overwritten
+    @Mapping(target = "password", ignore = true) // Handle password updates separately to prevent double-hashing
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUserFromDto(UserUpdateDto userUpdateDto,@MappingTarget User currentUser);
 }

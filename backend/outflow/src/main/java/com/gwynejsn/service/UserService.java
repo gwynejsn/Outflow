@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -20,10 +21,15 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User findByUsername(String username) {
-        User u = userDao.findByUsername(username);
-        if (u == null) throw new NotFoundException("User with username " + username + " does not exist");
+    public User findByEmail(String email) {
+        User u = userDao.findByEmail(email);
+        if (u == null) throw new NotFoundException("User with email " + email + " does not exist");
         return u;
+    }
+
+    public User findById(UUID id) {
+        return userDao.findById(id)
+                .orElseThrow(() -> new NotFoundException("User with id " + id + " does not exist"));
     }
 
     public List<User> getAllUsers() {
@@ -34,29 +40,29 @@ public class UserService {
     public User saveUser(User user) {
         if (user.getId() != null && userDao.existsById(user.getId())) {
             throw new AlreadyExistException("User with id " + user.getId() + " already exists");
-        } else if (userDao.existsByUsername(user.getUsername())) {
-            throw new AlreadyExistException("User with username " + user.getUsername() + " already exists");
+        } else if (userDao.existsByEmail(user.getEmail())) {
+            throw new AlreadyExistException("User with email " + user.getEmail() + " already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userDao.save(user);
     }
 
     @Transactional
-    public User updateUser(String username, User updatedFields) {
-        if (!userDao.existsByUsername(username)) {
-            throw new NotFoundException("Cannot update. User " + username + " does not exist");
+    public User updateUser(UUID id, User updatedFields, String newPlaintextPassword) {
+        if (!userDao.existsById(id)) {
+            throw new NotFoundException("Cannot update. User with id " + id + " does not exist");
         }
-        if (updatedFields.getPassword() != null && !updatedFields.getPassword().isBlank()) {
-            updatedFields.setPassword(passwordEncoder.encode(updatedFields.getPassword()));
+        if (newPlaintextPassword != null && !newPlaintextPassword.isBlank()) {
+            updatedFields.setPassword(passwordEncoder.encode(newPlaintextPassword));
         }
         return userDao.save(updatedFields);
     }
 
     @Transactional
-    public void deleteUser(String username) {
-        if (!userDao.existsByUsername(username)) {
-            throw new NotFoundException("Cannot delete. User " + username + " does not exist");
+    public void deleteUser(UUID id) {
+        if (!userDao.existsById(id)) {
+            throw new NotFoundException("Cannot delete. User with id " + id + " does not exist");
         }
-        userDao.deleteByUsername(username);
+        userDao.deleteById(id);
     }
 }

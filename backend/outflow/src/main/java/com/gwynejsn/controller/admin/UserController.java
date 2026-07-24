@@ -32,9 +32,9 @@ public class UserController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<UserDto> getUserByUsername(@PathVariable("username") String username) {
-        User user = userService.findByUsername(username);
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable("email") String email) {
+        User user = userService.findByEmail(email);
         return ResponseEntity.ok(UserMapper.INSTANCE.mapUserToDto(user));
     }
 
@@ -49,17 +49,16 @@ public class UserController {
 
     @PutMapping("/update")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserUpdateDto userUpdateDto) {
-        User currentUser = userService.findByUsername(userUpdateDto.username());
-
+        User currentUser = userService.findById(userUpdateDto.id());
 
         UserMapper.INSTANCE.updateUserFromDto(userUpdateDto, currentUser);
 
-        User saved = userService.updateUser(userUpdateDto.username(), currentUser);
+        User saved = userService.updateUser(userUpdateDto.id(), currentUser, userUpdateDto.password());
         return ResponseEntity.ok(UserMapper.INSTANCE.mapUserToDto(saved));
     }
 
-    @DeleteMapping("/delete/{username}")
-    public void deleteUser(@PathVariable("username") String username) {
-        userService.deleteUser(username);
+    @DeleteMapping("/delete/{id}")
+    public void deleteUser(@PathVariable("id") java.util.UUID id) {
+        userService.deleteUser(id);
     }
 }

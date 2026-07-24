@@ -33,8 +33,8 @@ public class NotificationController {
             HttpServletRequest request,
             @RequestParam(name = "expirationType", required = false) ExpirationType expirationType
             ) {
-        String currentUsername = request.getUserPrincipal().getName();
-        User user = userService.findByUsername(currentUsername);
+        String currentEmail = request.getUserPrincipal().getName();
+        User user = userService.findByEmail(currentEmail);
 
         List<Notification> notifications;
 
@@ -55,8 +55,8 @@ public class NotificationController {
 
     @GetMapping("/clear")
     public ResponseEntity<String> clearNotifications(HttpServletRequest request) {
-        String currentUsername = request.getUserPrincipal().getName();
-        User user = userService.findByUsername(currentUsername);
+        String currentEmail = request.getUserPrincipal().getName();
+        User user = userService.findByEmail(currentEmail);
 
         inAppNotificationService.clearNotifications(user.getId());
         return ResponseEntity.ok("Notifications cleared.");

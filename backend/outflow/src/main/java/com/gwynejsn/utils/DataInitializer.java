@@ -35,7 +35,6 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
         userDao.deleteAll();
 
         User adminUser = new User(
-                "admin",
                 passwordEncoder.encode("admin123"),
                 Role.ADMIN,
                 "System",
@@ -46,7 +45,6 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
         );
 
         User studentUser = new User(
-                "student@gmail.com",
                 passwordEncoder.encode("student123"),
                 Role.USER,
                 "John",
@@ -118,9 +116,9 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
         userDao.save(studentUser);
 
         System.out.println("\n🌱 [Outflow] Mock data seeded successfully!");
-        System.out.println("👤 Admin username: admin");
+        System.out.println("👤 Admin username: admin@outflow.com");
         System.out.println("🔑 Admin password: admin123");
-        System.out.println("👤 Student username: student");
+        System.out.println("👤 Student username: student@outflow.com");
         System.out.println("🔑 Student password: student123");
     }
 }

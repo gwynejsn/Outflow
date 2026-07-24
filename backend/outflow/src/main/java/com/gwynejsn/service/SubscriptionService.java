@@ -55,8 +55,8 @@ public class SubscriptionService {
     }
 
     @Transactional
-    public Subscription saveSubscription(String username, Subscription subscription) {
-        User user = userService.findByUsername(username);
+    public Subscription saveSubscription(String email, Subscription subscription) {
+        User user = userService.findByEmail(email);
         if (subscriptionDao.existsByTitle(subscription.getTitle())) {
             throw new AlreadyExistException("Subscription with title " + subscription.getTitle() + " already exists");
         }
