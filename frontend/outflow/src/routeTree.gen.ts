@@ -10,12 +10,24 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UserRouteImport } from './routes/_user'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as UserAccountRouteImport } from './routes/_user/account'
+import { Route as UserAdminRouteImport } from './routes/_user/admin'
+import { Route as UserDashboardRouteImport } from './routes/_user/dashboard'
+import { Route as UserNotificationsRouteImport } from './routes/_user/notifications'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthRegisterRouteImport } from './routes/auth/register'
+import { Route as UserAdminSubscriptionsRouteImport } from './routes/_user/admin/subscriptions'
+import { Route as UserAdminUsersRouteImport } from './routes/_user/admin/users'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserRoute = UserRouteImport.update({
+  id: '/_user',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -23,38 +35,128 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UserAccountRoute = UserAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => UserRoute,
+} as any)
+const UserAdminRoute = UserAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => UserRoute,
+} as any)
+const UserDashboardRoute = UserDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => UserRoute,
+} as any)
+const UserNotificationsRoute = UserNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => UserRoute,
+} as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => AuthRoute,
+} as any)
+const UserAdminSubscriptionsRoute = UserAdminSubscriptionsRouteImport.update({
+  id: '/subscriptions',
+  path: '/subscriptions',
+  getParentRoute: () => UserAdminRoute,
+} as any)
+const UserAdminUsersRoute = UserAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => UserAdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/account': typeof UserAccountRoute
+  '/admin': typeof UserAdminRouteWithChildren
+  '/dashboard': typeof UserDashboardRoute
+  '/notifications': typeof UserNotificationsRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/admin/subscriptions': typeof UserAdminSubscriptionsRoute
+  '/admin/users': typeof UserAdminUsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/account': typeof UserAccountRoute
+  '/admin': typeof UserAdminRouteWithChildren
+  '/dashboard': typeof UserDashboardRoute
+  '/notifications': typeof UserNotificationsRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/admin/subscriptions': typeof UserAdminSubscriptionsRoute
+  '/admin/users': typeof UserAdminUsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_user': typeof UserRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/_user/account': typeof UserAccountRoute
+  '/_user/admin': typeof UserAdminRouteWithChildren
+  '/_user/dashboard': typeof UserDashboardRoute
+  '/_user/notifications': typeof UserNotificationsRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/_user/admin/subscriptions': typeof UserAdminSubscriptionsRoute
+  '/_user/admin/users': typeof UserAdminUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/auth/login'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/account'
+    | '/admin'
+    | '/dashboard'
+    | '/notifications'
+    | '/auth/login'
+    | '/auth/register'
+    | '/admin/subscriptions'
+    | '/admin/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/auth/login'
-  id: '__root__' | '/' | '/auth' | '/auth/login'
+  to:
+    | '/'
+    | '/auth'
+    | '/account'
+    | '/admin'
+    | '/dashboard'
+    | '/notifications'
+    | '/auth/login'
+    | '/auth/register'
+    | '/admin/subscriptions'
+    | '/admin/users'
+  id:
+    | '__root__'
+    | '/'
+    | '/_user'
+    | '/auth'
+    | '/_user/account'
+    | '/_user/admin'
+    | '/_user/dashboard'
+    | '/_user/notifications'
+    | '/auth/login'
+    | '/auth/register'
+    | '/_user/admin/subscriptions'
+    | '/_user/admin/users'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  UserRoute: typeof UserRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
 }
 
@@ -67,12 +169,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_user': {
+      id: '/_user'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof UserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_user/account': {
+      id: '/_user/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof UserAccountRouteImport
+      parentRoute: typeof UserRoute
+    }
+    '/_user/admin': {
+      id: '/_user/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof UserAdminRouteImport
+      parentRoute: typeof UserRoute
+    }
+    '/_user/dashboard': {
+      id: '/_user/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof UserDashboardRouteImport
+      parentRoute: typeof UserRoute
+    }
+    '/_user/notifications': {
+      id: '/_user/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof UserNotificationsRouteImport
+      parentRoute: typeof UserRoute
     }
     '/auth/login': {
       id: '/auth/login'
@@ -81,21 +218,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_user/admin/subscriptions': {
+      id: '/_user/admin/subscriptions'
+      path: '/subscriptions'
+      fullPath: '/admin/subscriptions'
+      preLoaderRoute: typeof UserAdminSubscriptionsRouteImport
+      parentRoute: typeof UserAdminRoute
+    }
+    '/_user/admin/users': {
+      id: '/_user/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof UserAdminUsersRouteImport
+      parentRoute: typeof UserAdminRoute
+    }
   }
 }
 
+interface UserAdminRouteChildren {
+  UserAdminSubscriptionsRoute: typeof UserAdminSubscriptionsRoute
+  UserAdminUsersRoute: typeof UserAdminUsersRoute
+}
+
+const UserAdminRouteChildren: UserAdminRouteChildren = {
+  UserAdminSubscriptionsRoute: UserAdminSubscriptionsRoute,
+  UserAdminUsersRoute: UserAdminUsersRoute,
+}
+
+const UserAdminRouteWithChildren = UserAdminRoute._addFileChildren(
+  UserAdminRouteChildren,
+)
+
+interface UserRouteChildren {
+  UserAccountRoute: typeof UserAccountRoute
+  UserAdminRoute: typeof UserAdminRouteWithChildren
+  UserDashboardRoute: typeof UserDashboardRoute
+  UserNotificationsRoute: typeof UserNotificationsRoute
+}
+
+const UserRouteChildren: UserRouteChildren = {
+  UserAccountRoute: UserAccountRoute,
+  UserAdminRoute: UserAdminRouteWithChildren,
+  UserDashboardRoute: UserDashboardRoute,
+  UserNotificationsRoute: UserNotificationsRoute,
+}
+
+const UserRouteWithChildren = UserRoute._addFileChildren(UserRouteChildren)
+
 interface AuthRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  UserRoute: UserRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
 }
 export const routeTree = rootRouteImport

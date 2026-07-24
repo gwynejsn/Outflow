@@ -44,7 +44,7 @@ public class SubscriptionController {
     public ResponseEntity<SubscriptionDTO> createSubscription(@RequestBody SubscriptionCreateDto subscriptionCreateDto) {
         Subscription subscription = SubscriptionMapper.INSTANCE.mapDtoToSubscription(subscriptionCreateDto);
 
-        Subscription saved = subscriptionService.saveSubscription(subscriptionCreateDto.username(), subscription);
+        Subscription saved = subscriptionService.saveSubscription(subscriptionCreateDto.email(), subscription);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(SubscriptionMapper.INSTANCE.mapSubscriptionToDto(saved));

@@ -17,10 +17,10 @@ public class UserDetailsServiceImp implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws NotFoundException {
-        User user = userDao.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws NotFoundException {
+        User user = userDao.findByEmail(email);
         if (user == null) {
-            throw new NotFoundException("User with username " + username + " does not exist");
+            throw new NotFoundException("User with email " + email + " does not exist");
         }
         return new UserDecorator(user);
     }

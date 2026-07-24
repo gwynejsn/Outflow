@@ -29,8 +29,8 @@ public class UserSubscriptionController {
 
     @GetMapping()
     public ResponseEntity<List<SubscriptionDTO>> getSubscriptions(HttpServletRequest request) {
-        String currentUsername = request.getUserPrincipal().getName();
-        User currentUser = userService.findByUsername(currentUsername);
+        String currentEmail = request.getUserPrincipal().getName();
+        User currentUser = userService.findByEmail(currentEmail);
 
         return ResponseEntity.ok(
                 subscriptionService
@@ -45,11 +45,11 @@ public class UserSubscriptionController {
             @RequestBody UserSubscriptionCreateDto userSubscriptionCreateDto,
             HttpServletRequest request
     ) {
-        String currentUsername = request.getUserPrincipal().getName();
+        String currentEmail = request.getUserPrincipal().getName();
 
         Subscription subscription = SubscriptionMapper.INSTANCE.mapUserDtoToSubscription(userSubscriptionCreateDto);
 
-        Subscription saved = subscriptionService.saveSubscription(currentUsername, subscription);
+        Subscription saved = subscriptionService.saveSubscription(currentEmail, subscription);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(SubscriptionMapper.INSTANCE.mapSubscriptionToDto(saved));
@@ -60,14 +60,27 @@ public class UserSubscriptionController {
             HttpServletRequest request,
             @RequestBody SubscriptionUpdateDto subscriptionUpdateDto
     ) {
-        String currentUsername = request.getUserPrincipal().getName();
-        User currentUser = userService.findByUsername(currentUsername);
+        String currentEmail = request.getUserPrincipal().getName();
+        User currentUser = userService.findByEmail(currentEmail);
 
         Subscription currentSubscription = subscriptionService.getSubscriptionByIdFromUserId(currentUser.getId(), subscriptionUpdateDto.id());
 
         SubscriptionMapper.INSTANCE.updateSubscriptionFromDto(subscriptionUpdateDto, currentSubscription);
-        Subscription updatedSubscription = subscriptionService.updateSubscription(currentUser.getId(), currentSubscription);
-
+        Subscription updatedSubscription = subscriptionService.updateSubscription(currentSubscription.getId(), currentSubscription);
         return ResponseEntity.ok(SubscriptionMapper.INSTANCE.mapSubscriptionToDto(updatedSubscription));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteSubscription(
+            HttpServletRequest request,
+            @PathVariable("id") java.util.UUID id
+    ) {
+        String currentEmail = request.getUserPrincipal().getName();
+        User currentUser = userService.findByEmail(currentEmail);
+
+        Subscription currentSubscription = subscriptionService.getSubscriptionByIdFromUserId(currentUser.getId(), id);
+
+        subscriptionService.deleteSubscription(currentSubscription.getId());
+        return ResponseEntity.ok().build();
     }
 }

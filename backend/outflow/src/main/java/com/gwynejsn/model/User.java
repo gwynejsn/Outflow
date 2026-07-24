@@ -15,12 +15,12 @@ public class User {
     @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
-    private String username;
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
     private String firstName;
     private String lastName;
+    @Column(unique = true, nullable = false)
     private String email;
     @OneToMany(
             mappedBy = "user",
@@ -38,8 +38,7 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, Role role, String firstName, String lastName, String email, List<Notification> notifications, List<Subscription> subscriptions) {
-        this.username = username;
+    public User(String password, Role role, String firstName, String lastName, String email, List<Notification> notifications, List<Subscription> subscriptions) {
         this.password = password;
         this.role = role;
         this.firstName = firstName;
@@ -56,14 +55,6 @@ public class User {
 
     public void setId(@NonNull UUID id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
